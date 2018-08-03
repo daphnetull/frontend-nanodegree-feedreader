@@ -37,7 +37,7 @@ $(function() {
             allFeeds.forEach(function(feed,index){
                 expect(feed['url']).toBeDefined();
                 expect(feed['url'].length).not.toBe(0);
-            })
+            });
          });
 
         /* a test that loops through each feed
@@ -77,13 +77,13 @@ $(function() {
           * clicked and it hides when clicked again.
           */
 
-        it('menu changes visibiliy when clicked', function(){
+        it('menu changes visibility when clicked', function(){
             let state = false;
             for (var i = 0; i<2; i++){
                 menuClick.click();
                 expect(pageBody.classList.contains('menu-hidden')).toBe(state);
                 state = true;
-            };
+            }
         });
 
 
@@ -95,12 +95,10 @@ $(function() {
 
     describe('Initial Entries', function(){
 
-        const container = document.querySelector('.feed');
+        
 
         beforeEach(function(done){
-            loadFeed(0,function(){
-                done();
-            });
+            loadFeed(0,done);
         });
 
         /* ensures when the loadFeed
@@ -109,7 +107,8 @@ $(function() {
          */
 
         it('loadFeed function contains at least 1 .entry element in .feed container', function(){
-            expect(container.length).not.toBe(0);
+            const entry = document.querySelector('.feed .entry');
+            expect(entry.length).not.toBe(0);
         });
     })
 
@@ -118,22 +117,22 @@ $(function() {
 
     describe('New Feed Selection',function(){
 
-        let oldFeed;
-        let newFeed;
+        let feedArr = [];
+
 
         beforeEach(function(done){
-            oldFeed = document.querySelector('.feed');
-            loadFeed(0,function(){
-                done();
-                newFeed = document.querySelector('.feed');
-            });
+            for(let i = 0;i<2;i++){
+                loadFeed(i,function(){
+                    feedArr.push(document.querySelector('.feed').innerHTML);
+                    done();
+                });
+            }
         });
         /* ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          */
          it('content changes when a new feed is loaded by loadFeed()',function(){
-
-            expect(oldFeed).not.toBe(newFeed);
+            expect(feedArr[0]).not.toBe(feedArr[1]);
          })
     })
 
